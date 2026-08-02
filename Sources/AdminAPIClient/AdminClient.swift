@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 
 /// A banner message as returned by `admin-api`'s `GET /banners`. Only the fields consumers
 /// render are decoded - `admin-api`'s `models.BannerMessage` has more (id, scope, timestamps)
