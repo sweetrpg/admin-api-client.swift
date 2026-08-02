@@ -95,7 +95,19 @@ public actor AdminClient {
         guard let url = components?.url else { return [] }
 
         do {
-            let (data, response) = try await session.data(from: url)
+            let (data, response) = try await withCheckedThrowingContinuation {
+                (continuation: CheckedContinuation<(Data, URLResponse), Error>) in
+                let task = session.dataTask(with: url) { data, response, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else if let data, let response {
+                        continuation.resume(returning: (data, response))
+                    } else {
+                        continuation.resume(throwing: URLError(.badServerResponse))
+                    }
+                }
+                task.resume()
+            }
             guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode)
             else {
                 return []
