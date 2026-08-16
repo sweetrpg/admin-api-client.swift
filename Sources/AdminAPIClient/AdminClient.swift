@@ -66,7 +66,7 @@ public actor AdminClient {
   /// Returns active banners for the given scopes, most-severe-first as returned by
   /// `admin-api`.
   public func fetchBanners(scopes: [String]) async -> [Banner] {
-    await withSpan("fetchBanners") { _ in
+    await withSpan("fetch-banners") { _ in
       if let cached = cached(bannerCache) {
         return cached
       }
@@ -78,7 +78,7 @@ public actor AdminClient {
 
   /// Returns active maintenance-mode records for the given scopes.
   public func fetchMaintenanceModes(scopes: [String]) async -> [MaintenanceMode] {
-    await withSpan("fetchMaintenanceModes") { _ in
+    await withSpan("fetch-maintenance-modes") { _ in
       if let cached = cached(maintenanceCache) {
         return cached
       }
@@ -97,7 +97,7 @@ public actor AdminClient {
   }
 
   private func getScoped<T: Decodable>(path: String, scopes: [String]) async -> [T] {
-    await withSpan("getScoped") { _ in
+    await withSpan("get-scoped") { _ in
       guard let baseURL else { return [] }
       var components = URLComponents(
         url: baseURL.appendingPathComponent(path), resolvingAgainstBaseURL: false)
