@@ -86,11 +86,6 @@ public actor AdminClient {
         path: "maintenance-modes/active", scopes: scopes)
       maintenanceCache = CacheEntry(fetchedAt: Date(), value: modes)
       return modes
-
-      let modes: [MaintenanceMode] = await getScoped(
-        path: "maintenance-modes/active", scopes: scopes)
-      maintenanceCache = CacheEntry(fetchedAt: Date(), value: modes)
-      return modes
     }
   }
 
